@@ -11,6 +11,20 @@ var fs = require('fs');
 var redis = require('redis');
 var redis_client = redis.createClient();
 
+// # messages in the database
+var messageNum;
+redis_client.llen('all:messages', function(err, repl) {
+  if (err) {
+    res.writeHeader(500, { 'Content-Type': 'text/plain' });
+    res.write('Internal Server Error');
+    res.end();
+  }
+  else {
+    messageNum = parseInt(repl);
+  }
+});
+
+
 
 var getRequestHandler = function (req, res) {
   console.log('Got HTTP GET Request');
@@ -31,30 +45,53 @@ var postRequestHandler = function (req, res) {
     });
 
     req.on('end', function (data) {
-      redis_client.lpush('all:comments', post_request_body, function(err, repl){
+      var message = JSON.parse(post_request_body);
+      redis_client.lpush('all:messages', messageNum + 1, function(err, repl) {
         if (err) {
           res.writeHeader(500, { 'Content-Type': 'text/plain' });
           res.write('Internal Server Error');
           res.end();
         } else {
-          res.writeHeader(200, { 'Content-Type': 'text/html' });
-          res.write('OK');
-          res.end();
+          var objName = "message_" + (messageNum + 1);
+          var date = new Date();
+          redis_client.hmset(objName, "name", message.name, "input", message.input,
+                             "time", date.toString(), function(err, repl) {
+            if (err) {
+              res.writeHeader(500, { 'Content-Type': 'text/plain' });
+              res.write('Internal Server Error');
+              res.end();
+            } else {
+              res.writeHeader(200, { 'Content-Type': 'text/html' });
+              res.write('OK');
+              res.end();
+              messageNum += 1;
+            }
+          });
         }
       });
     });
 
   } else if (req.url === '/retrieve') {
 
-    redis_client.lrange('all:comments', 0, -1, function(err, repl){
+    redis_client.SORT('all:messages', "LIMIT", 0, 10, "DESC", "GET", "message_*->name",
+                      "GET", "message_*->input", "GET", "message_*->time", function(err, repl){
       if (err) {
         console.log('Error when reading from Redis', err);
         res.writeHeader(500, { 'Content-Type': 'text/plain' });
         res.write('Internal Server Error');
         res.end();
       } else {
+        var len = repl.length / 3;
+        var arr = new Array(len);
+        for (var i = 0; i < len; i += 1) {
+          arr[i] = {
+            name: repl[3*i],
+            input: repl[3*i + 1],
+            time: repl[3*i + 2]
+          };
+        }
         res.writeHeader(200, { 'Content-Type': 'application/javascript' });
-        res.write(JSON.stringify(repl));
+        res.write(JSON.stringify(arr));
         res.end();
       }
     });

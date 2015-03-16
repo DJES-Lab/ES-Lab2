@@ -34,7 +34,7 @@ var retrieveAllDataFromServer = function () {
     var arr = JSON.parse(JSON_string);
     for (var i = 0, len = arr.length; i < len; i += 1) {
       var liElm = document.createElement('li');
-      liElm.textContent = arr[i];
+      liElm.textContent = arr[i].input + " ............ by " + arr[i].name + " @ " + arr[i].time;
       listElm.appendChild(liElm);
     }
   };
