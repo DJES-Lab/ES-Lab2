@@ -1,0 +1,19 @@
+<h1>留言板</h1>
+<form action="/guest">
+    <button type="submit">Logout</button>
+</form>
+
+<form novalidate>
+    User Name: <input type="text" ng-model="comment.username"><br>
+    Comments:<br>
+    <textarea cols="40" rows="3" ng-model="comment.input"></textarea>
+    <input type="submit" ng-click="submitComment()">
+</form>
+
+<ul id="list-of-data">
+    <li ng-repeat="comment in comments">
+        <h3><strong>{{comment.name}}</strong>: </h3>
+        <p>{{comment.input}}</p>
+        <p><em>{{comment.time}}</em></p>
+    </li>
+</ul>
