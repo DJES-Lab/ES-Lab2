@@ -3,6 +3,9 @@
 // Declare app level module which depends on filters, and services
 
 angular.module('commentApp', [
+  'ngRoute',
+  'ngSanitize',
+  'ui.select',
   'commentApp.controllers',
   'commentApp.filters',
   'commentApp.services',

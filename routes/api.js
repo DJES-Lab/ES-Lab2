@@ -30,7 +30,30 @@ exports.comments = function(req, res) {
 };
 
 exports.comment = function(req, res) {
+    var startIndex = req.params.index;
+    var messageNum = req.params.number;
 
+    console.log("api/comment/:" + startIndex + "/:" + messageNum + " received");
+
+    db.sort("all:messages", "DESC",
+        "LIMIT", startIndex, messageNum,
+        "get", "message_*->name",
+        "get", "message_*->input",
+        "get", "message_*->time")
+        .then(function(messages) {
+            var len = messages.length / 3;
+            var arr = new Array(len);
+            for (var i = 0; i < len; i++) {
+                arr[i] = {
+                    name: messages[3 * i],
+                    input: messages[3 * i + 1],
+                    time: messages[3 * i + 2]
+                };
+            }
+            res.json({
+                comments: arr
+            });
+        });
 };
 
 // POST

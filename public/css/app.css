@@ -1,30 +1,43 @@
 /* app css stylesheet */
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+.comments-container {
+    width:400px;
+    border:1px solid #bbb;
+    margin:50px;
+    padding: 10px;
 }
 
-.menu:before {
-  content: "[";
+.comment-list {
+    padding:0;
+    list-style:none;
+    max-height:200px;
+    overflow:auto;
 }
 
-.menu:after {
-  content: "]";
+.comment-list li {
+    margin:0;
+    margin-top:10px;
 }
 
-.menu > li {
-  display: inline;
+.comment-list li > div {
+    display:table-cell;
 }
 
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
+.comment-text p {
+    margin:0;
 }
 
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
+.sub-text {
+    color:#aaa;
+    font-family:verdana;
+    font-size:11px;
+}
+
+.comment-box {
+    border-top:1px dotted #bbb;
+    padding:10px;
+}
+
+.comment-box .form-group * {
+    width:100%;
 }

@@ -3,17 +3,34 @@
     <button type="submit">Logout</button>
 </form>
 
-<form novalidate>
-    User Name: <input type="text" ng-model="comment.username"><br>
-    Comments:<br>
-    <textarea cols="40" rows="3" ng-model="comment.input"></textarea>
-    <input type="submit" ng-click="submitComment()">
-</form>
+<div class="comments-container">
+    <form class="form-inline" role="form" novalidate>
+        <div class="form-group">
+            <input class="form-control" type="text" ng-model="comment.username" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" cols="40" rows="3" ng-model="comment.input" placeholder="Your comments"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default" ng-click="submitComment()">Add</button>
+        </div>
+    </form>
 
-<ul id="list-of-data">
-    <li ng-repeat="comment in comments">
-        <h3><strong>{{comment.name}}</strong>: </h3>
-        <p>{{comment.input}}</p>
-        <p><em>{{comment.time}}</em></p>
-    </li>
-</ul>
+    <input class="form-control" type="text" ng-model="search.$" placeholder="Search...">
+    <ui-select multiple ng-model="order.selectedOptions" theme="bootstrap">
+        <ui-select-match placeholder="Sort by...">{{$item.group}} {{$item.title}}</ui-select-match>
+        <ui-select-choices ui-disable-choice="checkDisable(orderOption)" group-by="'group'" repeat="orderOption.order as orderOption in orderOptions | filter:$select.search">
+            <small>{{orderOption.title}}</small>
+        </ui-select-choices>
+    </ui-select>
+
+    <ul class="comment-list">
+        <li class="comment-box" ng-repeat="comment in comments | filter:search | orderBy: order.selectedOptions">
+            <div class="comment-text">
+                <p><strong>{{comment.name}}</strong>: </p>
+                <p>{{comment.input}}</p>
+                <span class="date sub-text">on {{comment.time | date: 'medium'}}</span>
+            </div>
+        </li>
+    </ul>
+</div>
