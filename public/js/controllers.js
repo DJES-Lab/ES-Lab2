@@ -8,7 +8,7 @@ angular.module('commentApp.controllers', [])
 
     })
 
-    .controller('homeController', ["$scope", "$http", "httpi", "$location", function ($scope, $http, httpi, $location) {
+    .controller('homeController', ["$scope", "$http", "$location", function ($scope, $http, $location) {
         $scope.comments = [];
         $scope.orderOptions = [
             {group: 'User Name', title: 'Ascend', order: 'name'},
@@ -28,48 +28,48 @@ angular.module('commentApp.controllers', [])
             return _.includes(normSelectedOptions, option.order[0] == '-' ? option.order.slice(1) : option.order);
         };
 
-        $scope.refresh = function() {
-            //$http({
-            //    method: 'GET',
-            //    url: '/api/comments'
-            //})
-            //    .success(function (data, status, headers, config) {
-            //        $scope.comments = data.comments;
-            //        $scope.comments.forEach(function(comment) {
-            //            comment.date = new Date(comment.time);
-            //            console.log(comment.date);
-            //            comment.time = Date.parse(comment.time);
-            //        });
-            //    })
-            //    .error(function (data, status, headers, config) {
-            //        console.log("error in getting comments!");
-            //    });
+        //$scope.refresh = function() {
+        //    //$http({
+        //    //    method: 'GET',
+        //    //    url: '/api/comments'
+        //    //})
+        //    //    .success(function (data, status, headers, config) {
+        //    //        $scope.comments = data.comments;
+        //    //        $scope.comments.forEach(function(comment) {
+        //    //            comment.date = new Date(comment.time);
+        //    //            console.log(comment.date);
+        //    //            comment.time = Date.parse(comment.time);
+        //    //        });
+        //    //    })
+        //    //    .error(function (data, status, headers, config) {
+        //    //        console.log("error in getting comments!");
+        //    //    });
+        //
+        //    $http({
+        //        method: 'GET',
+        //        url: '/api/comment',
+        //        params: {
+        //            index: 0,
+        //            number: 10
+        //        }
+        //    })
+        //        .success(function (data, status, headers, config) {
+        //            $scope.comments = data.comments;
+        //            $scope.comments.forEach(function(comment) {
+        //                comment.date = new Date(comment.time);
+        //                comment.time = Date.parse(comment.time);
+        //            });
+        //        })
+        //        .error(function (data, status, headers, config) {
+        //            console.log("error in getting comments!");
+        //        });
+        //
+        //    $scope.comment = {
+        //        username: "",
+        //        input: ""
+        //    };
+        //};
 
-            httpi({
-                method: 'GET',
-                url: '/api/comment/(:index/:number)',
-                data: {
-                    index: 0,
-                    number: 10
-                }
-            })
-                .success(function (data, status, headers, config) {
-                    $scope.comments = data.comments;
-                    $scope.comments.forEach(function(comment) {
-                        comment.date = new Date(comment.time);
-                        console.log(comment.date);
-                        comment.time = Date.parse(comment.time);
-                    });
-                })
-                .error(function (data, status, headers, config) {
-                    console.log("error in getting comments!");
-                });
-
-            $scope.comment = {
-                username: "",
-                input: ""
-            };
-        };
 
         $scope.submitComment = function() {
             if (!!$scope.comment.username && !!$scope.comment.input) {
@@ -78,11 +78,15 @@ angular.module('commentApp.controllers', [])
                     input: $scope.comment.input
                 })
                 .success(function(data, status, headers, config) {
-                    $scope.refresh();
+                    $scope.reloadPage = true;
+                    $scope.comment = {
+                        username: "",
+                        input: ""
+                    };
                     $location.path('/home');
                 });
             }
         };
 
-        $scope.refresh();
+        //$scope.refresh();
     }]);

@@ -38,8 +38,7 @@ app.get('/', routes.index);
 app.get('/pages/:name', routes.pages);
 
 // JSON API
-app.get('/api/comments', api.comments);
-app.get('/api/comment/:index/:number', api.comment);
+app.get('/api/comment', api.comment);
 
 app.post('/api/addComment', api.addComment);
 app.post('/api/editComment', api.editComment);

@@ -24,6 +24,7 @@
         </ui-select-choices>
     </ui-select>
 
+    <bgf-pagination collection="comments" url="'/api/comment'" per-page="5" client-limit="10" reload-page="reloadPage"></bgf-pagination>
     <ul class="comment-list">
         <li class="comment-box" ng-repeat="comment in comments | filter:search | orderBy: order.selectedOptions">
             <div class="comment-text">

@@ -6,6 +6,7 @@ angular.module('commentApp', [
   'ngRoute',
   'ngSanitize',
   'ui.select',
+  'bgf.paginateAnything',
   'commentApp.controllers',
   'commentApp.filters',
   'commentApp.services',
