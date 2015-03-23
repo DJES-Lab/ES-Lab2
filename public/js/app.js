@@ -7,6 +7,7 @@ angular.module('commentApp', [
   'ngSanitize',
   'ui.select',
   'bgf.paginateAnything',
+  'blueimp.fileupload',
   'commentApp.controllers',
   'commentApp.filters',
   'commentApp.services',

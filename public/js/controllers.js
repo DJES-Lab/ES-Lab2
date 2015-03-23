@@ -89,4 +89,47 @@ angular.module('commentApp.controllers', [])
         };
 
         //$scope.refresh();
+    }])
+
+    .controller("fileUploadController", ["$scope", "$http", "$window", "$filter", function($scope, $http) {
+        $scope.options = {
+            url: '/'
+        };
+        $scope.loadingFiles = true;
+        $http.get($scope.options.url)
+            .success(function(res) {
+                $scope.loadingFiles = false;
+                $scope.queue = res.data.files || {};
+            })
+            .error(function() {
+                $scope.loadingFiles = false;
+            });
+    }])
+
+    .controller("fileDestroyController", ["$scope", "$http", function($scope, $http) {
+        var file = $scope.file,
+            state;
+        if (file.url) {
+            file.$state = function() {
+                return state;
+            };
+            file.$destroy = function() {
+                state = 'pending';
+                return $http({
+                    url: file.deleteUrl,
+                    method: file.deleteType
+                })
+                    .success(function() {
+                        state = 'resolved';
+                        $scope.clear(file);
+                    })
+                    .error(function() {
+                        state = 'rejected';
+                    });
+            }
+        } else if (!file.$cancel && !file._index) {
+            file.$cancel = function() {
+                $scope.clear(file);
+            };
+        }
     }]);
