@@ -7,7 +7,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     routes = require('./routes'),
-    api = require('./routes/api');
+    api = require('./routes/api'),
+    upload = require('./routes/upload');
 
 var app = express();
 
@@ -47,6 +48,17 @@ app.post('/api/deleteComment', api.deleteComment);
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
 
+// upload handler
+app.use('/upload', function(req, res, next){
+    upload.fileHandler({
+        uploadDir: function () {
+            return __dirname + '/public/uploads/'
+        },
+        uploadUrl: function () {
+            return '/uploads'
+        }
+    })(req, res, next);
+});
 
 /**
  * Start Server

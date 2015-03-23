@@ -9,6 +9,7 @@
     "body-parser": "^1.0.2",
     "express": "~4.1.1",
     "ejs": ">=0.0.1",
-    "method-override": "^1.0.0"
+    "method-override": "^1.0.0",
+    "jquery-file-upload-middleware": "~0.1.7"
   }
 }
