@@ -49,16 +49,7 @@ app.post('/api/deleteComment', api.deleteComment);
 app.get('*', routes.index);
 
 // upload handler
-app.use('/upload', function(req, res, next){
-    upload.fileHandler({
-        uploadDir: function () {
-            return __dirname + '/public/uploads/'
-        },
-        uploadUrl: function () {
-            return '/uploads'
-        }
-    })(req, res, next);
-});
+app.use('/upload', upload.upload);
 
 /**
  * Start Server

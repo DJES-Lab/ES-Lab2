@@ -93,7 +93,7 @@ angular.module('commentApp.controllers', [])
 
     .controller("fileUploadController", ["$scope", "$http", "$window", "$filter", function($scope, $http) {
         $scope.options = {
-            url: '/'
+            url: '/upload'
         };
         $scope.loadingFiles = true;
         $http.get($scope.options.url)

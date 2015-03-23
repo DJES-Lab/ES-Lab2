@@ -4,12 +4,9 @@
 var upload = require('jquery-file-upload-middleware');
 
 upload.configure({
-    uploadDir: __dirname + '/public/uploads',
-    uploadUrl: '/uploads',
-    imageVersions: {
-        thumbnail: {
-            width: 80,
-            height: 80
-        }
-    }
+    uploadDir: __dirname + '/../public/uploads',
+    uploadUrl: '/uploads'
 });
+
+exports.upload = function(req, res, next) {
+    upload.fileHandler()(req, res, next);};
