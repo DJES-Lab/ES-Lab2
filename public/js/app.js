@@ -5,9 +5,10 @@
 angular.module('commentApp', [
   'ngRoute',
   'ngSanitize',
+  'ui.bootstrap',
   'ui.select',
   'bgf.paginateAnything',
-  'blueimp.fileupload',
+  'angularFileUpload',
   'commentApp.controllers',
   'commentApp.filters',
   'commentApp.services',

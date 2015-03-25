@@ -19,7 +19,6 @@ var app = express();
 // all environments
 app.set('port', process.env.PORT || 1234);
 app.set('views', __dirname + '/views');
-// app.set('view engine', 'jade');
 app.engine('.html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('view options', {
@@ -45,11 +44,13 @@ app.post('/api/addComment', api.addComment);
 app.post('/api/editComment', api.editComment);
 app.post('/api/deleteComment', api.deleteComment);
 
+// upload handler
+app.get('/upload', upload.get);
+app.post('/upload', upload.post);
+app.delete('/uploaded/files/:name', upload.delete);
+
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
-
-// upload handler
-app.use('/upload', upload.upload);
 
 /**
  * Start Server

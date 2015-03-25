@@ -3,3 +3,7 @@ node_modules/*
 
 # ignore webstorm IDE files
 .idea/*
+
+# ignore image files
+public/stickers/*
+public/uploaded/*

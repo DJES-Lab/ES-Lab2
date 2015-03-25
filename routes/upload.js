@@ -1,12 +1,32 @@
 /**
- * Created by chen on 2015/3/23.
+ * Created by derek on 2015/3/24.
  */
-var upload = require('jquery-file-upload-middleware');
 
-upload.configure({
-    uploadDir: __dirname + '/../public/uploads',
-    uploadUrl: '/uploads'
-});
+var options = {
+    tmpDir: __dirname + '/../public/uploaded/tmp',
+    uploadDir: __dirname + '/../public/uploaded/files',
+    uploadUrl: '/uploaded/files/',
+    storage: {
+        type: 'local'
+    }
+};
 
-exports.upload = function(req, res, next) {
-    upload.fileHandler()(req, res, next);};
+var uploader = require('blueimp-file-upload-expressjs')(options);
+
+exports.get = function(req, res) {
+    uploader.get(req, res, function(obj) {
+        res.json(obj);
+    })
+};
+
+exports.post = function(req, res) {
+    uploader.post(req, res, function(obj) {
+        res.json(obj);
+    })
+};
+
+exports.delete = function(req, res) {
+    uploader.delete(req, res, function(obj) {
+        res.json(obj);
+    })
+};
