@@ -12,30 +12,30 @@
             <textarea class="form-control" style="resize: none;" rows="3" ng-model="comment.input" placeholder="Your comments"></textarea>
         </div>
 
-        <div class="comment-upload" ng-show="showImageUpload || image.selectedImg">
-            <div class="comment-image-preview" ng-show="image.selectedImg">
-                <div class="comment-image-box">
-                    <span class="comment-remove glyphicon glyphicon-remove" ng-click="image.selectedImg = 0;"></span>
-                    <img class="comment-image" src="stickers/{{image.selectedImg}}.jpg"/>
+        <div class="comment-upload" ng-show="showImageUpload || sticker.selectedId">
+            <div class="comment-image-preview" ng-show="sticker.selectedId">
+                <div class="comment-add-image-box">
+                    <span class="comment-remove glyphicon glyphicon-remove" ng-click="sticker.selectedId = 0;"></span>
+                    <img class="comment-add-image" src="stickers/{{sticker.selectedId}}.gif"/>
                 </div>
             </div>
 
-            <drag-zone class="comment-image-preview"  ng-hide="uploader.queue.length"></drag-zone>
-            <div class="comment-image-preview" ng-repeat="item in uploader.queue" ng-show="uploader.queue.length">
-                <div class="comment-image-box">
-                    <span class="comment-remove glyphicon glyphicon-remove" ng-click="item.remove()"></span>
-                    <div image-preview="{file: item._file}"></div>
+            <drag-zone class="comment-image-preview" files="imageFiles" ng-hide="imageFiles.length"></drag-zone>
+            <div class="comment-image-preview" ng-repeat="imageFile in imageFiles" ng-show="imageFiles.length">
+                <div class="comment-add-image-box">
+                    <span class="comment-remove glyphicon glyphicon-remove" ng-click="imageFiles.length=0"></span>
+                    <div image-preview="{file: imageFile}"></div>
                 </div>
             </div>
         </div>
 
         <div class="comment-button-bar">
             <button class="btn btn-default glyphicon glyphicon-plus" data-toggle="button" ng-click="showImageUpload = !showImageUpload"></button>
-            <div class="btn-group" dropdown is-open="image.isOpen">
+            <div class="btn-group" dropdown>
                 <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle><span class="glyphicon glyphicon-picture"></span></button>
                 <div class="dropdown-menu up sticker-container" role="menu">
-                    <div ng-repeat="img in image.imgIds">
-                        <img class="sticker" src="stickers/{{img}}.jpg" ng-click="image.selectedImg=img"/>
+                    <div ng-repeat="img in sticker.stickerIds">
+                        <img class="sticker" src="stickers/{{img}}.gif" ng-click="sticker.selectedId=img"/>
                     </div>
                 </div>
             </div>
@@ -43,23 +43,27 @@
         </div>
     </form>
 
-    <input class="form-control" type="text" ng-model="search.$" placeholder="Search...">
-    <ui-select multiple ng-model="order.selectedOptions" theme="bootstrap">
-        <ui-select-match placeholder="Sort by...">{{$item.group}} {{$item.title}}</ui-select-match>
-        <ui-select-choices ui-disable-choice="checkDisable(orderOption)" group-by="'group'" repeat="orderOption.order as orderOption in orderOptions | filter:$select.search">
-            <small>{{orderOption.title}}</small>
-        </ui-select-choices>
-    </ui-select>
+    <bgf-pagination class="comment-pagination" collection="comments" url="'/api/comment'" per-page="5" client-limit="10" reload-page="reloadPage"></bgf-pagination>
 
-    <bgf-pagination collection="comments" url="'/api/comment'" per-page="5" client-limit="10" reload-page="reloadPage"></bgf-pagination>
+    <div class="comment-search-sort-bar">
+        <input class="comment-search form-control" type="text" ng-model="search.$" placeholder="Search this page...">
+        <ui-select class="comment-sort" multiple ng-model="order.selectedOptions" theme="bootstrap">
+            <ui-select-match placeholder="Sort this page by...">{{$item.group}} {{$item.title}}</ui-select-match>
+            <ui-select-choices ui-disable-choice="checkDisable(orderOption)" group-by="'group'" repeat="orderOption.order as orderOption in orderOptions | filter:$select.search">
+                <small>{{orderOption.title}}</small>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
     <ul class="comment-list">
         <li class="comment-box" ng-repeat="comment in comments | filter:search | orderBy: order.selectedOptions">
             <div class="comment-text">
                 <p><strong>{{comment.name}}</strong>: </p>
-                <p>{{comment.input}}</p>
-                <!--<div>-->
-                    <!--<img class="sticker" ng-if="comment.sticker !== undefined" ng-src="{{comment.sticker}}"/>-->
-                <!--</div>-->
+                <p ng-show="comment.input">{{comment.input}}</p>
+                <div class="comment-box-image-container">
+                    <img class="comment-box-image" ng-show="comment.sticker && comment.sticker != '0'" src="stickers/{{comment.sticker}}.gif"/>
+                    <img class="comment-box-image" ng-show="comment.imageUrl" src="{{comment.imageUrl}}"/>
+                </div>
                 <span class="date sub-text">on {{comment.time | date: 'medium'}}</span>
             </div>
         </li>

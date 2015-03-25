@@ -5,5 +5,4 @@ node_modules/*
 .idea/*
 
 # ignore image files
-public/stickers/*
 public/uploaded/*

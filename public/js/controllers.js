@@ -7,25 +7,26 @@ angular.module('commentApp.controllers', [])
     // write Ctrl here
 
     })
-
-    .controller('homeController', ["$scope", "$http", "$location", "FileUploader", function ($scope, $http, $location, FileUploader) {
-        $scope.options = {
-            url: '/upload',
-            removeAfterUpload: true,
-            queueLimit: 1
-        };
-
-        var uploader = $scope.uploader = new FileUploader($scope.options);
-
-        uploader.filters.push({
-            name: 'imageFilter',
-            fn: function(item, options) {
-                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-                return '|jpg|png|jpeg|bmp|gif'.indexOf(type) !== -1;
-            }
-        });
+    .controller('homeController', ["$scope", "$http", "$upload", "$location", function ($scope, $http, $upload, $location) {
 
         $scope.comments = [];
+
+        $scope.showImageUpload = false;
+
+        $scope.sticker = {
+            selectedId: 0,
+            stickerIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        };
+
+        $scope.comment = {
+            name: "",
+            input: "",
+            sticker: 0,
+            imageUrl: ""
+        };
+
+        $scope.imageFiles = [];
+
         $scope.orderOptions = [
             {group: 'User Name', title: 'Ascend', order: 'name'},
             {group: 'User Name', title: 'Descend', order: '-name'},
@@ -45,30 +46,43 @@ angular.module('commentApp.controllers', [])
         };
 
         $scope.submitComment = function() {
-            if (!!$scope.comment.username && !!$scope.comment.input) {
-                $http.post('/api/addComment', {
-                    name: $scope.comment.username,
-                    input: $scope.comment.input
-                })
-                .success(function(data, status, headers, config) {
-                    $scope.reloadPage = true;
-                    $scope.comment = {
-                        username: "",
-                        input: ""
+            if (!!$scope.comment.username) {
+                if (!!$scope.comment.input || !!$scope.sticker.selectedId || !!$scope.imageFiles.length) {
+                    var postComment = function(uploadedImageUrl) {
+                        $http.post('/api/addComment', {
+                            name: $scope.comment.username,
+                            input: $scope.comment.input,
+                            sticker: $scope.sticker.selectedId,
+                            imageUrl: uploadedImageUrl
+                        })
+                            .success(function (data, status, headers, config) {
+                                $scope.reloadPage = true;
+                                $scope.comment = {
+                                    username: "",
+                                    input: ""
+                                };
+                                $scope.sticker.selectedId = 0;
+                                $scope.imageFiles.length = 0;
+                                $location.path('/home');
+                            });
                     };
-                    $location.path('/home');
-                });
-            }
-            if (uploader.queue.length) {
-                uploader.queue[0].upload();
-            }
-        };
 
-        $scope.showImageUpload = false;
-
-        $scope.image = {
-            isOpen: false,
-            selectedImg: 0,
-            imgIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    if ($scope.imageFiles.length) {
+                        $upload.upload({
+                            url: '/upload',
+                            file: $scope.imageFiles[0]
+                        })
+                            .success(function(data, status, headers, config) {
+                                postComment(data.files[0].url);
+                            });
+                    } else {
+                        postComment("");
+                    }
+                } else {
+                    console.log("At least one type of comments is required!");
+                }
+            } else {
+                console.log("User Name is required!");
+            }
         };
     }]);

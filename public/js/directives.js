@@ -6,13 +6,14 @@ angular.module('commentApp.directives', [])
     .directive('dragZone', function() {
         return {
             restrict: 'E',
+            scope: {
+                files: '='
+            },
             replace: true,
             template:
-                '<div nv-file-drop uploader="uploader">' +
-                    '<div nv-file-over uploader="uploader" over-class="comment-upload-zone-over" class="comment-upload-zone">' +
-                        '<input id="file-input" nv-file-select="" uploader="uploader" style="display: none;" type="file">' +
-                        '<a ng-click="triggerClick()">Drag Upload Image</a>' +
-                    '</div>' +
+                '<div ng-file-drop ng-model="files" class="comment-upload-zone" drag-over-class="comment-upload-zone-over" ng-multiple="false" ng-accept="\'.jpg,.jpeg,.png,.bmp,.gif\'">' +
+                    '<div id="file-input" style="display: none;" ng-file-select ng-model="files" ng-multiple="false"></div>' +
+                    '<a ng-click="triggerClick()">Drag Upload Image</a>' +
                 '</div>',
             link: function(scope, elem) {
                 scope.triggerClick = function() {
@@ -35,7 +36,7 @@ angular.module('commentApp.directives', [])
 
         return {
             restrict: 'A',
-            template: '<img class="comment-image"/>',
+            template: '<img class="comment-add-image"/>',
             replace: true,
             link: function(scope, elem, attr) {
                 if (!helper.support) return;
