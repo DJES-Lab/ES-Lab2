@@ -150,8 +150,15 @@
 }
 
 .comment-box {
+    position: relative;
     border-top:1px dotted #bbb;
     padding:10px;
+}
+
+.comment-box .comment-edit {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 .comment-box-image-container {

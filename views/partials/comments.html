@@ -1,0 +1,83 @@
+<h1>留言板</h1>
+<div class="comments-container">
+    <form role="form" novalidate>
+        <div class="form-group">
+            <textarea class="form-control" style="resize: none;" rows="3" ng-model="comment.content" placeholder="Your comments"></textarea>
+        </div>
+
+        <div class="comment-upload" ng-show="showImageUpload || editMode || comment.stickerId">
+            <div class="comment-image-preview" ng-show="comment.stickerId">
+                <div class="comment-add-image-box">
+                    <span class="comment-remove glyphicon glyphicon-remove" ng-click="comment.stickerId = 0;"></span>
+                    <img class="comment-add-image" src="stickers/{{comment.stickerId}}.gif"/>
+                </div>
+            </div>
+
+            <drag-zone class="comment-image-preview" files="imageFiles" ng-hide="imageFiles.length || comment.imageUrl"></drag-zone>
+            <div class="comment-image-preview" ng-repeat="imageFile in imageFiles" ng-show="imageFiles.length">
+                <div class="comment-add-image-box">
+                    <span class="comment-remove glyphicon glyphicon-remove" ng-click="imageFiles.length=0"></span>
+                    <div image-preview="{file: imageFile}"></div>
+                </div>
+            </div>
+
+            <div class="comment-image-preview" ng-show="comment.imageUrl">
+                <div class="comment-add-image-box">
+                    <span class="comment-remove glyphicon glyphicon-remove" ng-click="comment.imageUrl = '';"></span>
+                    <img class="comment-add-image" src="{{comment.imageUrl}}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="comment-button-bar">
+            <button class="btn btn-default glyphicon glyphicon-plus" data-toggle="button" ng-click="showImageUpload = !showImageUpload"></button>
+            <div class="btn-group" dropdown>
+                <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle><span class="glyphicon glyphicon-picture"></span></button>
+                <div class="dropdown-menu up sticker-container" role="menu">
+                    <div ng-repeat="img in sticker.stickerIds">
+                        <img class="sticker" src="stickers/{{img}}.gif" ng-click="comment.stickerId=img"/>
+                    </div>
+                </div>
+            </div>
+            <button style="float: right;" class="btn btn-default" ng-hide="editMode" ng-click="submitComment()">Add</button>
+            <button style="float: right;" class="btn btn-default" ng-show="editMode" ng-click="updateComment()">Update</button>
+            <button style="float: right;" class="btn btn-default" ng-show="editMode" ng-click="cancelEditComment()">Cancel</button>
+        </div>
+    </form>
+
+    <bgf-pagination class="comment-pagination" collection="comments" url="'/api/comments'" per-page="5" client-limit="10" reload-page="reloadPage"></bgf-pagination>
+
+    <div class="comment-search-sort-bar">
+        <input class="comment-search form-control" type="text" ng-model="search.$" placeholder="Search this page...">
+        <ui-select class="comment-sort" multiple ng-model="order.selectedOptions" theme="bootstrap">
+            <ui-select-match placeholder="Sort this page by...">{{$item.group}} {{$item.title}}</ui-select-match>
+            <ui-select-choices ui-disable-choice="checkDisable(orderOption)" group-by="'group'" repeat="orderOption.order as orderOption in orderOptions | filter:$select.search">
+                <small>{{orderOption.title}}</small>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <ul class="comment-list">
+        <li class="comment-box" ng-repeat="comment in comments | filter:search | orderBy: order.selectedOptions">
+            <div class="comment-edit dropdown" dropdown ng-show="comment.creator.id == currentUser.id">
+                <button class="btn btn-default dropdown-toggle" dropdown-toggle>
+                    <span class="glyphicon glyphicon-th-list"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a ng-click="editComment(comment)"><span class="glyphicon glyphicon-edit"></span> Edit</a></li>
+                    <li><a ng-click="deleteComment(comment)"><span class="glyphicon glyphicon-remove"></span> Delete</a></li>
+                </ul>
+            </div>
+            <div class="comment-text">
+                <p><strong>{{comment.creator.username}}</strong>: </p>
+                <p ng-show="comment.content">{{comment.content}}</p>
+                <div class="comment-box-image-container">
+                    <img class="comment-box-image" ng-show="comment.stickerId && comment.stickerId != '0'" src="stickers/{{comment.stickerId}}.gif"/>
+                    <img class="comment-box-image" ng-show="comment.imageUrl" src="{{comment.imageUrl}}"/>
+                </div>
+                <span class="date sub-text" ng-hide="comment.lastEditTime">Created on {{comment.creationTime | date: 'medium'}}</span>
+                <span class="date sub-text" ng-show="comment.lastEditTime">Last edited on {{comment.lastEditTime | date: 'medium'}}</span>
+            </div>
+        </li>
+    </ul>
+</div>

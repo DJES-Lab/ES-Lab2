@@ -4,58 +4,57 @@
  */
 
 var express = require('express'),
+    cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
-    routes = require('./routes'),
-    api = require('./routes/api'),
-    upload = require('./routes/upload');
+    session = require('express-session'),
+    passport = require('passport'),
+    RedisStore = require('connect-redis')(session),
+    db = require('./lib/db/redis'),
+    Nohm = require('nohm').Nohm,
+    config = require('./lib/config/config');
+
+db.on('connect', function() {
+    Nohm.setPrefix('comment-app');
+    Nohm.setClient(db);
+});
 
 var app = express();
+var pass = require('./lib/config/pass');
 
 /**
  * Configuration
  */
-
 // all environments
-app.set('port', process.env.PORT || 1234);
 app.set('views', __dirname + '/views');
+
+app.use(express.static(__dirname+'/public'));
+
 app.engine('.html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('view options', {
-  layout: false
+    layout: false
 });
+
+//==============EXPRESS==============
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
-app.use(express.static(__dirname+'/public'));
+app.use(session({
+    secret: config.secret,
+    store: new RedisStore(),
+    saveUninitialized: true,
+    resave: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-/**
- * Routes
- */
-
-// serve index and view pages
-app.get('/', routes.index);
-app.get('/pages/:name', routes.pages);
-
-// JSON API
-app.get('/api/comment', api.comment);
-
-app.post('/api/addComment', api.addComment);
-app.post('/api/editComment', api.editComment);
-app.post('/api/deleteComment', api.deleteComment);
-
-// upload handler
-app.get('/upload', upload.get);
-app.post('/upload', upload.post);
-app.delete('/uploaded/files/:name', upload.delete);
-
-// redirect all others to the index (HTML5 history)
-app.get('*', routes.index);
+require('./lib/config/routes')(app);
 
 /**
  * Start Server
  */
-
-app.listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + app.get('port'));
+app.listen(config.port, function () {
+  console.log('Express server listening on port ' + config.port);
 });

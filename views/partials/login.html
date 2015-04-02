@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+        <h1 class="text-center">
+            Sign In
+        </h1>
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <form class="form" name="form" ng-submit="login(form)" novalidate>
+                <div ng-class="{'has-error': form.username.$error.redis}">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Username"
+                           name="username"
+                           ng-model="user.username"
+                           required
+                           autofocus
+                           redis-error/>
+                    <p class="help-block"
+                       ng-show="form.username.$error.redis">
+                        {{errors.username}}
+                    </p>
+                </div>
+
+                <div ng-class="{'has-error': form.password.$error.redis}">
+                    <input type="password"
+                           class="form-control"
+                           placeholder="Password"
+                           name="password"
+                           ng-model="user.password"
+                           required
+                           redis-error>
+                    <p class="help-block"
+                       ng-show="form.password.$error.redis">
+                        {{errors.password}}
+                    </p>
+                </div>
+
+                <div class="form-group has-error">
+                    <p class="help-block">{{error.other}}</p>
+                </div>
+
+                <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+
+                <span class="clearfix"></span>
+            </form>
+
+            <a href="/signup" class="text-center">Create an account</a>
+        </div>
+    </div>
+</div>
