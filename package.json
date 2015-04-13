@@ -15,6 +15,7 @@
     "method-override": "^2.3.2",
     "blueimp-file-upload-expressjs": "~0.3.2",
     "connect-redis": "~2.2.0",
-    "nohm": "~0.9.6"
+    "nohm": "~0.9.6",
+    "lodash": "~3.6.0"
   }
 }

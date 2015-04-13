@@ -1,7 +1,7 @@
 /**
  * Created by derek on 2015/3/30.
  */
-angular.module('commentApp')
+angular.module('app')
     .controller('commentsController', function ($rootScope, $scope, $http, $upload, $location) {
 
         $scope.comments = [];

@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .controller('signupController', function($scope, Auth, $location) {
         $scope.register = function(form) {
             Auth.createUser({

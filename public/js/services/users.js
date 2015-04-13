@@ -3,9 +3,9 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .factory('User', function($resource) {
-        return $resource('/auth/users/:id/', {}, {
+        return $resource('/auth/users/', {}, {
             'update': {
                 method: 'PUT'
             }

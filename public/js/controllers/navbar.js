@@ -3,13 +3,16 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .controller('navbarController', ["$scope", "Auth", "$location", function($scope, Auth, $location) {
         $scope.menu = [];
 
         $scope.authMenu = [{
             "title": "Comments",
             "link": "comments/"
+        }, {
+            "title": "Tessel Graph",
+            "link": "tessel-graph/"
         }];
 
         $scope.logout = function() {

@@ -1,6 +1,6 @@
 <div class="navbar navbar-default" ng-controller="navbarController">
     <div class="navbar-header">
-        <a class="navbar-brand" href="/" name="top">Awesome Comments</a>
+        <a class="navbar-brand" href="/" name="top">ES Lab</a>
     </div>
     <div class="nav navbar-nav">
         <ul class="nav navbar-nav">
@@ -21,7 +21,8 @@
             <li class="dropdown" dropdown>
                 <a class="dropdown-toggle" dropdown-toggle>Welcome, {{currentUser.username}}<b class="caret"></b></a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a ng-click="logout()"><span class="glyphicon glyphicon-log-out">Logout</span></a></li>
+                    <li><a href="/account"><span class="glyphicon glyphicon-user"> Account</span></a></li>
+                    <li><a ng-click="logout()"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
                 </ul>
             </li>
         </ul>

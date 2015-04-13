@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .constant('focusConfig', {
         focusClass: 'focused'
     })

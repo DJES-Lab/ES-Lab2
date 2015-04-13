@@ -10,18 +10,25 @@
                      'has-error': form.username.$invalid && form.username.$dirty || form.username.$error.redis
                      }">
                     <input class="form-control"
-                            placeholder="User Name"
-                            type="text"
-                            name="username"
-                            ng-model="user.username"
-                            required
-                            autofocus
-                            on-focus
-                            unique-username
-                            redis-error/>
+                           placeholder="User Name"
+                           type="text"
+                           name="username"
+                           ng-model="user.username"
+                           ng-minlength="4"
+                           required
+                           autofocus
+                           on-focus
+                           unique-username
+                           redis-error/>
                     <p class="help-block"
                        ng-show="form.username.$error.unique && form.username">
                         That username is already taken.
+                    </p>
+                    <p class="help-block"
+                       ng-show="form.username.$error.minlength
+                                && form.username.$dirty
+                                && !form.username.$error.required">
+                        Username must be at least 4 characters.
                     </p>
                     <p class="help-block"
                        ng-show="form.password.$error.redis">

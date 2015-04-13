@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .controller('mainController', function($scope) {
 
     });

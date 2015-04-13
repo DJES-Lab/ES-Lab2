@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .factory('Auth', function Auth($location, $rootScope, Session, User, $cookieStore) {
         $rootScope.currentUser = $cookieStore.get('user') || null;
         $cookieStore.remove('user');
@@ -50,10 +50,9 @@ angular.module('commentApp')
                 });
             },
 
-            changePassword: function(username, oldPassword, newPassword, callback) {
+            changePassword: function(oldPassword, newPassword, callback) {
                 var cb = callback || angular.noop;
                 User.update({
-                    username: username,
                     oldPassword: oldPassword,
                     newPassword: newPassword
                 }, function(user) {
@@ -64,13 +63,11 @@ angular.module('commentApp')
                 });
             },
 
-            removeUser: function(username, password, callback) {
+            removeUser: function(callback) {
                 var cb = callback || angular.noop;
-                User.delete({
-                    username: username,
-                    password: password
-                }, function(user) {
-                    console.log(user + 'removed');
+                User.delete(function(user) {
+                    console.log(user.username + ' removed');
+                    $rootScope.currentUser = null;
                     return cb();
                 }, function(err) {
                     return cb(err.data);

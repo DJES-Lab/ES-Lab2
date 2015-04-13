@@ -1,0 +1,8 @@
+<h2>Tessel Graph</h2>
+<div ng-repeat="data in tesselData">
+    <h4>ID: {{ data.id }}</h4>
+    <p>String Data: {{ data.stringData }}</p>
+    <p>Integer Data: {{ data.integerData }}</p>
+    <p>Time: {{ data.creationTime }}</p>
+    <button class="btn btn-default" ng-click="deleteTesselData(data)">Delete</button>
+</div>

@@ -1,0 +1,105 @@
+<div class="container">
+    <div class="row">
+        <h2>Hello {{ currentUser.username }}</h2>
+        <div class="col-sm-6 col-md-4">
+            <accordion>
+                <accordion-group is-open="status.changePassword.open">
+                    <accordion-heading>
+                        Change Password
+                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.changePassword.open, 'glyphicon-chevron-right': !status.changePassword.open}"></i>
+                    </accordion-heading>
+                    <form class="form" name="changePasswordForm" ng-submit="changePassword()" novalidate>
+                        <div class="form-group"
+                             ng-class="{
+                            'has-warning': changePasswordForm.oldPassword.$dirty,
+                            'has-success': changePasswordForm.oldPassword.$valid && changePasswordForm.oldPassword.$dirty && !changePasswordForm.oldPassword.$error.redis,
+                            'has-error': changePasswordForm.oldPassword.$invalid && changePasswordForm.oldPassword.$dirty || changePasswordForm.oldPassword.$error.redis
+                            }">
+                            <input class="form-control"
+                                   placeholder="Old Password"
+                                   type="password"
+                                   name="oldPassword"
+                                   ng-model="changePassword.user.oldPassword"
+                                   confirm-password="currentUser.id"
+                                   required
+                                   redis-error/>
+                            <p class="help-block"
+                               ng-show="changePasswordForm.oldPassword.$error.confirmPassword && changePasswordForm.oldPassword">
+                                Your password is incorrect!
+                            </p>
+                            <p class="help-block"
+                               ng-show="changePasswordForm.oldPassword.$error.redis">
+                                {{changePassword.errors.password}}
+                            </p>
+                        </div>
+
+                        <div class="form-group"
+                             ng-class="{
+                        'has-warning': changePasswordForm.newPassword.$dirty,
+                        'has-success': changePasswordForm.newPassword.$valid && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.redis,
+                        'has-error': changePasswordForm.newPassword.$invalid && changePasswordForm.newPassword.$dirty || changePasswordForm.newPassword.$error.redis
+                        }">
+                            <input class="form-control"
+                                   placeholder="New Password"
+                                   type="password"
+                                   name="newPassword"
+                                   ng-model="changePassword.user.newPassword"
+                                   ng-minlength="5"
+                                   required
+                                   redis-error/>
+                            <p class="help-block"
+                               ng-show="(changePasswordForm.newPassword.$error.minlength || changePasswordForm.newPassword.$invalid)
+                                && changePasswordForm.newPassword.$dirty
+                                && !changePasswordForm.newPassword.$error.required">
+                                Password must be at least 5 characters.
+                            </p>
+                            <p class="help-block"
+                               ng-show="changePasswordForm.newPassword.$error.redis">
+                                {{changePassword.errors.password}}
+                            </p>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block"
+                                type="submit"
+                                ng-disabled="changePasswordForm.$invalid">Change Password</button>
+                    </form>
+                </accordion-group>
+                <accordion-group is-open="status.deleteAccount.open">
+                    <accordion-heading>
+                        Delete Account
+                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.deleteAccount.open, 'glyphicon-chevron-right': !status.deleteAccount.open}"></i>
+                    </accordion-heading>
+                    <form class="form" name="deleteAccountForm" ng-submit="deleteAccount()" novalidate>
+                        <div class="form-group"
+                             ng-class="{
+                            'has-warning': deleteAccountForm.password.$dirty,
+                            'has-success': deleteAccountForm.password.$valid && deleteAccountForm.password.$dirty && !deleteAccountForm.password.$error.redis,
+                            'has-error': deleteAccountForm.password.$invalid && deleteAccountForm.password.$dirty || deleteAccountForm.password.$error.redis
+                            }">
+                            <input class="form-control"
+                                   placeholder="Password"
+                                   type="password"
+                                   name="password"
+                                   ng-model="deleteAccount.user.password"
+                                   confirm-password="currentUser.id"
+                                   required
+                                   redis-error/>
+                            <p class="help-block"
+                               ng-show="deleteAccountForm.password.$error.confirmPassword && deleteAccountForm.password">
+                                Your password is incorrect!
+                            </p>
+                            <p class="help-block"
+                               ng-show="deleteAccountForm.password.$error.redis">
+                                {{deleteAccount.errors.password}}
+                            </p>
+                        </div>
+
+                        <button class="btn btn-lg btn-danger btn-block"
+                                type="submit"
+                                ng-disabled="deleteAccountForm.$invalid">Delete Account</button>
+                    </form>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+</div>

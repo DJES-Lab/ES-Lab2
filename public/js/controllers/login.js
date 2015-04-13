@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .controller('loginController', function($scope, Auth, $location) {
         $scope.error = {};
         $scope.user = {};

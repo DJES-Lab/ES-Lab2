@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('commentApp')
+angular.module('app')
     .directive('imagePreview', ['$window', function($window) {
         var helper = {
             support: !!($window.FileReader),

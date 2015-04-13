@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 
-angular.module('commentApp', [
+angular.module('app', [
   'ngRoute',
   'ngCookies',
   'ngResource',
@@ -12,10 +12,6 @@ angular.module('commentApp', [
   'ui.select',
   'bgf.paginateAnything',
   'angularFileUpload'
-  //'commentApp.controllers',
-  //'commentApp.filters'
-  //'commentApp.services'
-  //'commentApp.directives'
 ])
     .config(function ($routeProvider, $locationProvider) {
         $routeProvider
@@ -27,6 +23,10 @@ angular.module('commentApp', [
                 templateUrl: 'partials/comments.html',
                 controller: 'commentsController'
             })
+            .when('/tessel-graph', {
+                templateUrl: 'partials/tessel-graph.html',
+                controller: 'tesselGraphController'
+            })
             .when('/login', {
                 templateUrl: 'partials/login.html',
                 controller: 'loginController'
@@ -34,6 +34,10 @@ angular.module('commentApp', [
             .when('/signup', {
                 templateUrl: 'partials/signup.html',
                 controller: 'signupController'
+            })
+            .when('/account', {
+                templateUrl: 'partials/account.html',
+                controller: 'accountController'
             })
             .otherwise({
                 redirectTo: '/'
