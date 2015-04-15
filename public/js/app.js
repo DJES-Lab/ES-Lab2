@@ -11,9 +11,10 @@ angular.module('app', [
   'ui.bootstrap',
   'ui.select',
   'bgf.paginateAnything',
-  'angularFileUpload'
+  'angularFileUpload',
+  'angular-growl'
 ])
-    .config(function ($routeProvider, $locationProvider) {
+    .config(function ($routeProvider, $locationProvider, growlProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/main.html',
@@ -43,6 +44,9 @@ angular.module('app', [
                 redirectTo: '/'
             });
         $locationProvider.html5Mode(true);
+
+        growlProvider.globalTimeToLive(5000);
+        growlProvider.globalPosition('bottom-left');
     })
     .run(function($rootScope, $location, Auth) {
         $rootScope.$watch('currentUser', function(currentUser) {

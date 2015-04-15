@@ -5,7 +5,6 @@
             <form class="form" name="form" ng-submit="register(form)" novalidate>
                 <div class="form-group"
                      ng-class="{
-                     'has-warning': form.username.$dirty,
                      'has-success': form.username.$valid && form.username.$dirty && !form.username.$error.redis,
                      'has-error': form.username.$invalid && form.username.$dirty || form.username.$error.redis
                      }">
@@ -38,7 +37,6 @@
 
                 <div class="form-group"
                      ng-class="{
-                        'has-warning': form.password.$dirty,
                         'has-success': form.password.$valid && form.password.$dirty && !form.password.$error.redis,
                         'has-error': form.password.$invalid && form.password.$dirty || form.password.$error.redis
                         }">

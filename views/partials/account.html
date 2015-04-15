@@ -8,10 +8,9 @@
                         Change Password
                         <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.changePassword.open, 'glyphicon-chevron-right': !status.changePassword.open}"></i>
                     </accordion-heading>
-                    <form class="form" name="changePasswordForm" ng-submit="changePassword()" novalidate>
+                    <form class="form" name="changePasswordForm" ng-submit="changePassword(changePasswordForm)" novalidate>
                         <div class="form-group"
                              ng-class="{
-                            'has-warning': changePasswordForm.oldPassword.$dirty,
                             'has-success': changePasswordForm.oldPassword.$valid && changePasswordForm.oldPassword.$dirty && !changePasswordForm.oldPassword.$error.redis,
                             'has-error': changePasswordForm.oldPassword.$invalid && changePasswordForm.oldPassword.$dirty || changePasswordForm.oldPassword.$error.redis
                             }">
@@ -19,7 +18,7 @@
                                    placeholder="Old Password"
                                    type="password"
                                    name="oldPassword"
-                                   ng-model="changePassword.user.oldPassword"
+                                   ng-model="changePasswordModel.user.oldPassword"
                                    confirm-password="currentUser.id"
                                    required
                                    redis-error/>
@@ -35,15 +34,14 @@
 
                         <div class="form-group"
                              ng-class="{
-                        'has-warning': changePasswordForm.newPassword.$dirty,
-                        'has-success': changePasswordForm.newPassword.$valid && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.redis,
-                        'has-error': changePasswordForm.newPassword.$invalid && changePasswordForm.newPassword.$dirty || changePasswordForm.newPassword.$error.redis
-                        }">
+                            'has-success': changePasswordForm.newPassword.$valid && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.redis,
+                            'has-error': changePasswordForm.newPassword.$invalid && changePasswordForm.newPassword.$dirty || changePasswordForm.newPassword.$error.redis
+                            }">
                             <input class="form-control"
                                    placeholder="New Password"
                                    type="password"
                                    name="newPassword"
-                                   ng-model="changePassword.user.newPassword"
+                                   ng-model="changePasswordModel.user.newPassword"
                                    ng-minlength="5"
                                    required
                                    redis-error/>
@@ -69,10 +67,9 @@
                         Delete Account
                         <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.deleteAccount.open, 'glyphicon-chevron-right': !status.deleteAccount.open}"></i>
                     </accordion-heading>
-                    <form class="form" name="deleteAccountForm" ng-submit="deleteAccount()" novalidate>
+                    <form class="form" name="deleteAccountForm" ng-submit="deleteAccount(deleteAccountForm)" novalidate>
                         <div class="form-group"
                              ng-class="{
-                            'has-warning': deleteAccountForm.password.$dirty,
                             'has-success': deleteAccountForm.password.$valid && deleteAccountForm.password.$dirty && !deleteAccountForm.password.$error.redis,
                             'has-error': deleteAccountForm.password.$invalid && deleteAccountForm.password.$dirty || deleteAccountForm.password.$error.redis
                             }">
@@ -80,7 +77,7 @@
                                    placeholder="Password"
                                    type="password"
                                    name="password"
-                                   ng-model="deleteAccount.user.password"
+                                   ng-model="deleteAccountModel.user.password"
                                    confirm-password="currentUser.id"
                                    required
                                    redis-error/>
