@@ -1,4 +1,13 @@
 <h2>Tessel Graph</h2>
+
+<nvd3-line-chart
+        data="exampleData"
+        showXAxis="true"
+        showYAxis="true"
+        tooltips="true"
+        interactive="true">
+</nvd3-line-chart>
+
 <div ng-repeat="data in tesselData">
     <h4>ID: {{ data.id }}</h4>
     <p>String Data: {{ data.stringData }}</p>
