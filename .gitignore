@@ -1,5 +1,6 @@
 # ignore node modules
 node_modules/*
+tessel/node_modules/*
 
 # ignore webstorm IDE files
 .idea/*
