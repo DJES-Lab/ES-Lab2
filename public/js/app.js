@@ -13,7 +13,7 @@ angular.module('app', [
   'bgf.paginateAnything',
   'angularFileUpload',
   'angular-growl',
-  'nvd3ChartDirectives',
+  'nvd3ChartDirectives'
 ])
     .config(function ($routeProvider, $locationProvider, growlProvider) {
         $routeProvider
