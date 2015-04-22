@@ -28,7 +28,7 @@ climate.on('ready', function () {
     setInterval(function () {
         climate.readTemperature('c', function (err, temp) {
             climate.readHumidity(function (err, humid) {
-                console.log('Degrees:', temp.toFixed(4) + 'C', 'Humidity:', humid.toFixed(4) + '%RH');
+                //console.log('Degrees:', temp.toFixed(4) + 'C', 'Humidity:', humid.toFixed(4) + '%RH');
                 climateData.degree = temp.toFixed(4);
                 climateData.humidity = humid.toFixed(4);
             });

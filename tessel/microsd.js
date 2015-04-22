@@ -22,18 +22,18 @@ sdcard.on('ready', function() {
         var fs = fss[0];
         console.log('Writing...');
 
-        fs.readFile('accelData.txt', function(err, data) {
+        fs.readFile('data.txt', function(err, data) {
             console.log('Read:\n', data.toString());
             //console.log(data);
-            //var temp = JSON.parse('[' + data.toString().slice(0, -1) + ']');
-            //console.log(temp);
+            var temp = JSON.parse('[' + data.toString().slice(0, -1) + ']');
+            console.log(temp);
 
-            //http.post(url + '/test', data.toString().slice(0, -1), function(res){
-            //    res.setEncoding('utf8');
-            //    res.on('data', function(chunk) {
-            //        console.log(chunk);
-            //    });
-            //});
+            http.post(url + '/tessel/data', '[' + data.toString().slice(0, -1) + ']', function(res){
+                res.setEncoding('utf8');
+                res.on('data', function(chunk) {
+                    console.log(chunk);
+                });
+            });
         });
 
     });

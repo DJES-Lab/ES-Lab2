@@ -19,7 +19,8 @@ var data = [];
 for (var i = 0; i < batchSize; i++) {
     data.push({
         accelerometerData: {},
-        climateData: {}
+        climateData: {},
+        gpsData: {}
     })
 }
 
@@ -42,11 +43,13 @@ sdcard.on('ready', function() {
             data[i].accelerometerData.z = accelerometerData.z;
             data[i].climateData.degree = climateData.degree;
             data[i].climateData.humidity = climateData.humidity;
+            data[i].gpsData.lat = gpsData.lat;
+            data[i].gpsData.lng = gpsData.lng;
             i++;
             if (i == batchSize) {
                 //console.log(data);
                 //var fileName = 'accelData' + fileID + '.txt';
-                fs.writeFile('accelData.txt', JSON.stringify(data).slice(1, -1) + ',', function (err) {
+                fs.writeFile('data.txt', JSON.stringify(data).slice(1, -1) + ',', function (err) {
                     console.log('Write complete');
                 });
 
