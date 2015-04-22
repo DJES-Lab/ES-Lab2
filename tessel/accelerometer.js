@@ -1,16 +1,8 @@
 
 var tessel = require('tessel');
-var accel = require('accel-mma84').use(tessel.port['D']);
+var accel = require('accel-mma84').use(tessel.port['A']);
 
-//var fsReady = false;
-//var fs = null;
-var accelVec = exports.accelVec = {
-    x: 0.00,
-    y: 0.00,
-    z: 0.00
-};
-
-
+var accelerometerData = exports.accelerometerData = {};
 
 // Initialize the accelerometer.
 accel.on('ready', function () {
@@ -24,18 +16,9 @@ accel.on('ready', function () {
         console.log('x:', xyz[0].toFixed(2),
             'y:', xyz[1].toFixed(2),
             'z:', xyz[2].toFixed(2));
-        accelVec.x = xyz[0].toFixed(2);
-        accelVec.y = xyz[1].toFixed(2);
-        accelVec.z = xyz[2].toFixed(2);
-
-        //if (fsReady) {
-        //    fs.appendFile('accelData.txt', JSON.stringify(xyz), function (err) {
-        //        console.log('Write complete');
-        //    });
-        //}
-        //else {
-        //    console.log('File system is not ready')
-        //}
+        accelerometerData.x = xyz[0].toFixed(2);
+        accelerometerData.y = xyz[1].toFixed(2);
+        accelerometerData.z = xyz[2].toFixed(2);
     });
 
 });

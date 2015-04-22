@@ -11,11 +11,16 @@ var config = require('./config');
 var url = 'http://' + config.host + ':' + config.port;
 
 //var fileID = 0;
-var batchSize = 10;
-var accelVec = require('./accelerometer').accelVec;
-var accelVecArray = [];
+var batchSize = 8;
+var accelerometerData = require('./accelerometer').accelerometerData;
+var climateData = require('./climate').climateData;
+var gpsData = require('./gps').gpsData;
+var data = [];
 for (var i = 0; i < batchSize; i++) {
-    accelVecArray.push({})
+    data.push({
+        accelerometerData: {},
+        climateData: {}
+    })
 }
 
 sdcard.on('ready', function() {
@@ -31,21 +36,21 @@ sdcard.on('ready', function() {
 
         var i = 0;
         setInterval(function() {
-            //console.log(accelVec);
-            accelVecArray[i].x = accelVec.x;
-            accelVecArray[i].y = accelVec.y;
-            accelVecArray[i].z = accelVec.z;
+            //console.log(accelerometerData);
+            data[i].accelerometerData.x = accelerometerData.x;
+            data[i].accelerometerData.y = accelerometerData.y;
+            data[i].accelerometerData.z = accelerometerData.z;
+            data[i].climateData.degree = climateData.degree;
+            data[i].climateData.humidity = climateData.humidity;
             i++;
             if (i == batchSize) {
-                //console.log(accelVecArray);
+                //console.log(data);
                 //var fileName = 'accelData' + fileID + '.txt';
-                fs.writeFile('accelData.txt', JSON.stringify(accelVecArray).slice(1, -1) + ',', function (err) {
+                fs.writeFile('accelData.txt', JSON.stringify(data).slice(1, -1) + ',', function (err) {
                     console.log('Write complete');
                 });
-                //fs.appendFile('accelData.txt', JSON.stringify('asdanhosdjfoajofwioahnfiojoiwiofanhffniolnhjiwohfoiawnhfilhawiuh'), function (err) {
-                //    console.log('Write complete');
-                //});
-                //fs.appendFileSync('accelData.txt', JSON.stringify(accelVecArray).slice(1, -1) + ',', 'utf8');
+
+                //fs.appendFileSync('accelData.txt', JSON.stringify(data).slice(1, -1) + ',', 'utf8');
                 i = 0;
                 //fileID++;
             }

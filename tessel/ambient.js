@@ -1,65 +1,31 @@
-// Any copyright is dedicated to the Public Domain.
-// http://creativecommons.org/publicdomain/zero/1.0/
-
-/*********************************************
- This ambient module example console.logs
- ambient light and sound levels and whenever a
- specified light or sound level trigger is met.
- *********************************************/
 
 var tessel = require('tessel');
-var ambientlib = require('ambient-attx4');
+//var ambientlib = require('ambient-attx4');
 
-var ambient = ambientlib.use(tessel.port['A']);
+var amb = require('ambient-attx4').use(tessel.port['D']);
 
-ambient.on('ready', function () {
+var ambientData = module.exports = {};
+
+//amb.on('ready', function () {
     // Get points of light and sound data.
-    setInterval( function () {
-        ambient.getLightLevel( function(err, ldata) {
-            if (err) throw err;
-            ambient.getSoundLevel( function(err, sdata) {
-                if (err) throw err;
-                console.log("Light level:", ldata.toFixed(8), " ", "Sound Level:", sdata.toFixed(8));
-            });
-        })}, 500); // The readings will happen every .5 seconds unless the trigger is hit
+    //console.log('Ambient ready!');
+    //setInterval( function () {
+        //console.log('In setInterval');
+        //ambient.getLightLevel( function(err, ldata) {
+        //    console.log(err);
+        //    if (err) throw err;
+        //    ambient.getSoundLevel( function(err, sdata) {
+        //        if (err) throw err;
+        //        console.log("Light level:", ldata.toFixed(6), " ", "Sound Level:", sdata.toFixed(6));
+        //        ambientData.soundLevel = sdata.toFixed(6);
+        //        ambientData.lightLevel = ldata.toFixed(6);
+        //    });
+        //})
+    //}, 500); // The readings will happen every .5 seconds unless the trigger is hit
 
-    ambient.setLightTrigger(0.5);
 
-    // Set a light level trigger
-    // The trigger is a float between 0 and 1
-    ambient.on('light-trigger', function(data) {
-        console.log("Our light trigger was hit:", data);
+//});
 
-        // Clear the trigger so it stops firing
-        ambient.clearLightTrigger();
-        //After 1.5 seconds reset light trigger
-        setTimeout(function () {
-
-            ambient.setLightTrigger(0.2);
-
-        },1500);
-    });
-
-    // Set a sound level trigger
-    // The trigger is a float between 0 and 1
-    ambient.setSoundTrigger(0.1);
-
-    ambient.on('sound-trigger', function(data) {
-        console.log("Something happened with sound: ", data);
-
-        // Clear it
-        ambient.clearSoundTrigger();
-
-        //After 1.5 seconds reset sound trigger
-        setTimeout(function () {
-
-            ambient.setSoundTrigger(0.1);
-
-        },1500);
-
-    });
-});
-
-ambient.on('error', function (err) {
-    console.log(err)
-});
+//ambient.on('error', function (err) {
+//    console.log(err)
+//});
