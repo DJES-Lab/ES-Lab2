@@ -1,21 +1,23 @@
 <h2>Tessel Graph</h2>
 
 <nvd3-line-chart
-        data="exampleData"
-        showXAxis="true"
-        showYAxis="true"
-        tooltips="true"
-        interactive="true">
+        data="accelGraphData"
+        showxaxis="true"
+        showyaxis="true"
+        xaxistickformat="xAxisTickFormatFunction()"
+        width="550"
+        height="350">
 </nvd3-line-chart>
 
 <div ng-repeat="data in tesselData">
     <h4>ID: {{ data.id }}</h4>
     <h5>Accelerometer Data:</h5>
     <p>x: {{ data.accelerometerData.x }} y: {{ data.accelerometerData.y }} z: {{ data.accelerometerData.z }}</p>
-    <h5>Ambient Data:</h5>
-    <p>Sound Level: {{ data.ambientData.soundLevel }} Illuminance: {{ data.ambientData.illuminance }}</p>
+    <h5>Climate Data:</h5>
+    <p>Degree: {{ data.climateData.degree }} Humidity: {{ data.climateData.humidity }}</p>
     <h5>GPS Data:</h5>
     <p>Latitude: {{ data.gpsData.lat }} Longitude: {{ data.gpsData.lng }}</p>
+    <h5>Time: {{ data.time }}</h5>
     <h5>Creation Time: {{ data.creationTime }}</h5>
     <button class="btn btn-default" ng-click="deleteTesselData(data)">Delete</button>
 </div>
