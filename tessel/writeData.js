@@ -4,20 +4,23 @@
 var tessel = require('tessel');
 var sdcardlib = require('sdcard');
 var sdcard = sdcardlib.use(tessel.port['B']);
+var led1 = tessel.led[0];
 var http = require('http');
 http.post = require('./httpJsonPost');
-var config = require('./config');
+var serverConfig = require('./config').server;
+var dataInfo = require('./config').dataInfo;
 
-var url = 'http://' + config.host + ':' + config.port;
+var url = 'http://' + serverConfig.host + ':' + serverConfig.port;
 
 //var fileID = 0;
-var batchSize = 16;
+var batchSize = 300;
 var accelerometerData = require('./accelerometer').accelerometerData;
 var climateData = require('./climate').climateData;
 var gpsData = require('./gps').gpsData;
 var data = [];
 for (var i = 0; i < batchSize; i++) {
     data.push({
+        title: '',
         accelerometerData: {},
         climateData: {},
         gpsData: {},
@@ -33,6 +36,7 @@ sdcard.on('ready', function() {
         var i = 0;
         setInterval(function() {
             //console.log(accelerometerData);
+            data[i].title = dataInfo.title;
             data[i].accelerometerData.x = accelerometerData.x;
             data[i].accelerometerData.y = accelerometerData.y;
             data[i].accelerometerData.z = accelerometerData.z;
@@ -45,8 +49,13 @@ sdcard.on('ready', function() {
             if (i == batchSize) {
                 //console.log(data);
                 //var fileName = 'accelData' + fileID + '.txt';
+                var writeBlinkID = setInterval(function() {
+                    led1.toggle();
+                }, 400);
                 fs.writeFile('data.txt', JSON.stringify(data).slice(1, -1) + ',', function (err) {
                     console.log('Write complete');
+                    clearInterval(writeBlinkID);
+                    led1.output(1);
                 });
 
                 //fs.appendFileSync('accelData.txt', JSON.stringify(data).slice(1, -1) + ',', 'utf8');

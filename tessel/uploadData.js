@@ -11,29 +11,29 @@ var tessel = require('tessel');
 var sdcardlib = require('sdcard');
 var http = require('http');
 http.post = require('./httpJsonPost');
-var config = require('./config');
+var serverConfig = require('./config').server;
 
-var url = 'http://' + config.host + ':' + config.port;
+var url = 'http://' + serverConfig.host + ':' + serverConfig.port;
 
 var sdcard = sdcardlib.use(tessel.port['B']);
 
 sdcard.on('ready', function() {
     sdcard.getFilesystems(function(err, fss) {
         var fs = fss[0];
-        console.log('Writing...');
+        console.log('Reading...');
 
         fs.readFile('data.txt', function(err, data) {
-            console.log('Read:\n', data.toString());
+            //console.log('Read:\n', data.toString());
             //console.log(data);
             var dataObj = JSON.parse('[' + data.toString().slice(0, -1) + ']');
-            console.log(dataObj);
+            //console.log(dataObj);
 
-            //http.post(url + '/tessel/data', dataObj, function(res){
-            //    res.setEncoding('utf8');
-            //    res.on('data', function(chunk) {
-            //        console.log(chunk);
-            //    });
-            //});
+            http.post(url + '/api/tessel/data/arr', dataObj, function(res){
+                res.setEncoding('utf8');
+                res.on('data', function(chunk) {
+                    console.log(chunk);
+                });
+            });
         });
 
     });
