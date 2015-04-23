@@ -170,6 +170,8 @@ angular.module('app')
         };
 
         $scope.tesselData = [];
+        $scope.velocityData = [];
+        $scope.speedData = [];
 
         var initGraphData = function() {
             $scope.accelGraphData = [{
@@ -187,6 +189,17 @@ angular.module('app')
                 values: []
             }, {
                 key: 'humidity',
+                values: []
+            }];
+            $scope.velocityGraphData = [{
+                key: 'horizontalVelocityX',
+                values: []
+            }, {
+                key: 'horizontalVelocityY',
+                values: []
+            }];
+            $scope.speedGraphData = [{
+                key: 'horizontalSpeed',
                 values: []
             }];
         };
@@ -217,6 +230,46 @@ angular.module('app')
                 });
         };
 
+        $scope.getTesselAnalysisData = function() {
+            $http({
+                method: 'GET',
+                url: 'api/tessel/analysis/exp1/accelerometer/analHorizontalVelocity'
+            })
+                .success(function (data, status, headers, config) {
+                    $scope.velocityData.length = 0;
+                    $scope.velocityData = data;
+                    initGraphData();
+                    $scope.velocityGraphData.map(function(obj, index) {
+                        $scope.velocityData.map(function(data) {
+                            $scope.velocityGraphData[index].values.push([Date.parse(data.time), data[$scope.velocityGraphData[index].key]]);
+                        });
+                    });
+                    $scope.refreshCharts();
+
+                    $location.path('/tessel-graph');
+                });
+        };
+
+        $scope.getTesselSpeedData = function() {
+            $http({
+                method: 'GET',
+                url: 'api/tessel/analysis/exp1/accelerometer/analHorizontalSpeed'
+            })
+                .success(function (data, status, headers, config) {
+                    $scope.speedData.length = 0;
+                    $scope.speedData = data;
+                    initGraphData();
+                    $scope.speedGraphData.map(function(obj, index) {
+                        $scope.speedData.map(function(data) {
+                            $scope.speedGraphData[index].values.push([Date.parse(data.time), data[$scope.speedGraphData[index].key]]);
+                        });
+                    });
+                    $scope.refreshCharts();
+
+                    $location.path('/tessel-graph');
+                });
+        };
+
         $scope.deleteTesselData = function(data) {
             $http({
                 method: 'DELETE',
@@ -229,4 +282,6 @@ angular.module('app')
         };
 
         $scope.getTesselData();
+        $scope.getTesselAnalysisData();
+        $scope.getTesselSpeedData();
     });
