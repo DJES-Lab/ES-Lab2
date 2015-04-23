@@ -187,7 +187,8 @@ angular.module('app')
         $scope.getTesselData = function() {
             $http({
                 method: 'GET',
-                url: 'api/tessel/data'
+                //url: 'api/tessel/data'
+                url: 'json/tessel/exp1.json'
             })
                 .success(function (data, status, headers, config) {
                     $scope.tesselData.length = 0;
