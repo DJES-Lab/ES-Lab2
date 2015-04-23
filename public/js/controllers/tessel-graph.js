@@ -5,6 +5,7 @@ angular.module('app')
     .controller('tesselGraphController', function ($scope, $http, $location) {
         $scope.testData = [
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -17,6 +18,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -29,6 +31,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -41,6 +44,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -53,6 +57,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -65,6 +70,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 32
                 },
@@ -77,6 +83,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -89,6 +96,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -101,6 +109,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:2, z: 3
                 },
@@ -113,6 +122,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 1, y:22, z: -3
                 },
@@ -125,6 +135,7 @@ angular.module('app')
                 time: new Date().toString()
             },
             {
+                title: 'Test',
                 accelerometerData: {
                     x: 11, y:-2, z: 3.2
                 },
