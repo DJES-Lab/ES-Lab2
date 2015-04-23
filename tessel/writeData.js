@@ -11,7 +11,7 @@ var config = require('./config');
 var url = 'http://' + config.host + ':' + config.port;
 
 //var fileID = 0;
-var batchSize = 8;
+var batchSize = 16;
 var accelerometerData = require('./accelerometer').accelerometerData;
 var climateData = require('./climate').climateData;
 var gpsData = require('./gps').gpsData;
@@ -20,19 +20,14 @@ for (var i = 0; i < batchSize; i++) {
     data.push({
         accelerometerData: {},
         climateData: {},
-        gpsData: {}
+        gpsData: {},
+        time: {}
     })
 }
 
 sdcard.on('ready', function() {
     sdcard.getFilesystems(function(err, fss) {
         fs = fss[0];
-
-        // Initialize the file 'accelData.txt'
-        //fs.writeFile('accelData.txt', '', function(err) {
-        //    console.log('Initializing the file accelData.txt...');
-        //    //fsReady = true;
-        //});
         console.log('File System is ready');
 
         var i = 0;
@@ -45,6 +40,7 @@ sdcard.on('ready', function() {
             data[i].climateData.humidity = climateData.humidity;
             data[i].gpsData.lat = gpsData.lat;
             data[i].gpsData.lng = gpsData.lng;
+            data[i].time = new Date().toString();
             i++;
             if (i == batchSize) {
                 //console.log(data);

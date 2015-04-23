@@ -25,15 +25,15 @@ sdcard.on('ready', function() {
         fs.readFile('data.txt', function(err, data) {
             console.log('Read:\n', data.toString());
             //console.log(data);
-            var temp = JSON.parse('[' + data.toString().slice(0, -1) + ']');
-            console.log(temp);
+            var dataObj = JSON.parse('[' + data.toString().slice(0, -1) + ']');
+            console.log(dataObj);
 
-            http.post(url + '/tessel/data', '[' + data.toString().slice(0, -1) + ']', function(res){
-                res.setEncoding('utf8');
-                res.on('data', function(chunk) {
-                    console.log(chunk);
-                });
-            });
+            //http.post(url + '/tessel/data', dataObj, function(res){
+            //    res.setEncoding('utf8');
+            //    res.on('data', function(chunk) {
+            //        console.log(chunk);
+            //    });
+            //});
         });
 
     });

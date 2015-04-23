@@ -1,11 +1,3 @@
-// Any copyright is dedicated to the Public Domain.
-// http://creativecommons.org/publicdomain/zero/1.0/
-
-/**********************************************************
- This gps example logs a stream of data:
- coordinates, detected satellites, timestamps, and altitude.
- For best results, try it while outdoors.
- **********************************************************/
 
 var tessel = require('tessel');
 var gpsLib = require('gps-a2235h');
@@ -14,7 +6,7 @@ gpsLib.debug = 0; // switch this to 1 for debug logs, 2 for printing out raw nme
 // GPS uses software UART, which is only available on Port C
 // we use Port C because it is port most isolated from RF noise
 var gps = gpsLib.use(tessel.port['C']);
-var led1 = tessel.led[0].output(1);
+var led1 = tessel.led[0].output(0);
 var led2 = tessel.led[1].output(0);
 
 var gpsData = exports.gpsData = {};
@@ -22,6 +14,7 @@ var gpsData = exports.gpsData = {};
 // Wait until the module is connected
 gps.on('ready', function () {
     console.log('GPS module powered and ready. Waiting for satellites...');
+    led1.toggle();
 
     // Emit coordinates when we get a coordinate fix
     gps.on('coordinates', function (coords) {
