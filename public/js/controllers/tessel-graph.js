@@ -182,6 +182,13 @@ angular.module('app')
                 key: 'z',
                 values: []
             }];
+            $scope.climateGraphData = [{
+                key: 'degree',
+                values: []
+            }, {
+                key: 'humidity',
+                values: []
+            }];
         };
 
         $scope.getTesselData = function() {
@@ -195,8 +202,13 @@ angular.module('app')
                     initGraphData();
                     $scope.tesselData = data;
                     $scope.accelGraphData.map(function(obj, index) {
-                        $scope.tesselData.map(function(data, dataIndex) {
-                            $scope.accelGraphData[index].values.push([Date.parse(data.time)+dataIndex*10000, data.accelerometerData[$scope.accelGraphData[index].key]]);
+                        $scope.tesselData.map(function(data) {
+                            $scope.accelGraphData[index].values.push([Date.parse(data.time), data.accelerometerData[$scope.accelGraphData[index].key]]);
+                        });
+                    });
+                    $scope.climateGraphData.map(function(obj, index) {
+                        $scope.tesselData.map(function(data) {
+                            $scope.climateGraphData[index].values.push([Date.parse(data.time), data.climateData[$scope.climateGraphData[index].key]]);
                         });
                     });
                     $scope.refreshCharts();
