@@ -1,53 +1,111 @@
 <h2>Tessel Graph</h2>
 
-<nvd3-line-chart
-        data="accelGraphData"
-        showxaxis="true"
-        showyaxis="true"
-        xaxistickformat="xAxisTickFormatFunction()"
-        width="550"
-        height="350">
-</nvd3-line-chart>
+<ui-select ng-model="jsonFileProperties.selectedJSONFile"
+           theme="bootstrap"
+           reset-search-input="false"
+           style="width: 300px;">
+    <ui-select-match placeholder="Select a source data file...">{{$select.selected}}</ui-select-match>
+    <ui-select-choices repeat="fileName in jsonFileProperties.allJSONFileNames track by $index"
+                       refresh="getAllJSONFileNames()"
+                       refresh-delay="0">
+        <div ng-bind-html="fileName | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>
+<br/>
+<tabset>
+    <tab ng-repeat="dataType in jsonFileProperties.allDataTypes" heading="{{dataType}}" select="jsonFileProperties.selectedDataType = dataType">
+        <ui-select ng-model="jsonFileProperties.selectedAnalysisMethod"
+                   theme="bootstrap"
+                   reset-search-input="false"
+                   style="width: 300px;">
+            <ui-select-match placeholder="Select an analysis method...">{{$select.selected}}</ui-select-match>
+            <ui-select-choices repeat="method in jsonFileProperties.allAnalysisMethods[jsonFileProperties.selectedDataType] track by $index">
+                <div ng-bind-html="method | highlight: $select.search"></div>
+            </ui-select-choices>
+        </ui-select>
+        <nvd3-line-chart
+                data="tesselGraphData[jsonFileProperties.selectedDataType]"
+                showxaxis="true"
+                showyaxis="true"
+                forcey="[-0.2]"
+                xaxistickformat="xAxisTickFormatFunction()"
+                width="550"
+                height="350"
+                showlegend="true"
+                useinteractiveguideline="true"
+                tooltips="true"
+                interpolate="cardinal-open">
+        </nvd3-line-chart>
+    </tab>
+    <!--<tab heading="Accelerometer" select="refreshCharts()">-->
+        <!--<nvd3-line-chart-->
+                <!--data="accelGraphData"-->
+                <!--showxaxis="true"-->
+                <!--showyaxis="true"-->
+                <!--forcey="[-0.2]"-->
+                <!--xaxistickformat="xAxisTickFormatFunction()"-->
+                <!--width="550"-->
+                <!--height="350"-->
+                <!--showlegend="true"-->
+                <!--useinteractiveguideline="true"-->
+                <!--tooltips="true"-->
+                <!--interpolate="cardinal-open">-->
+        <!--</nvd3-line-chart>-->
+    <!--</tab>-->
+    <!--<tab heading="Climate" select="refreshCharts()">-->
+        <!--<nvd3-line-chart-->
+                <!--data="climateGraphData"-->
+                <!--showxaxis="true"-->
+                <!--showyaxis="true"-->
+                <!--xaxistickformat="xAxisTickFormatFunction()"-->
+                <!--width="550"-->
+                <!--height="350"-->
+                <!--showlegend="true"-->
+                <!--useinteractiveguideline="true"-->
+                <!--tooltips="true"-->
+                <!--interpolate="cardinal-open">-->
+        <!--</nvd3-line-chart>-->
+    <!--</tab>-->
+</tabset>
 
-<nvd3-line-chart
-        data="climateGraphData"
-        showxaxis="true"
-        showyaxis="true"
-        xaxistickformat="xAxisTickFormatFunction()"
-        width="550"
-        height="350">
-</nvd3-line-chart>
+<!--<nvd3-line-chart-->
+        <!--data="velocityGraphData"-->
+        <!--showxaxis="true"-->
+        <!--showyaxis="true"-->
+        <!--xaxistickformat="xAxisTickFormatFunction()"-->
+        <!--width="550"-->
+        <!--height="350"-->
+        <!--showlegend="true"-->
+        <!--useinteractiveguideline="true"-->
+        <!--tooltips="true"-->
+        <!--interpolate="cardinal-open">-->
+<!--</nvd3-line-chart>-->
 
-<nvd3-line-chart
-        data="velocityGraphData"
-        showxaxis="true"
-        showyaxis="true"
-        xaxistickformat="xAxisTickFormatFunction()"
-        width="550"
-        height="350">
-</nvd3-line-chart>
+<!--<nvd3-line-chart-->
+        <!--data="speedGraphData"-->
+        <!--showxaxis="true"-->
+        <!--showyaxis="true"-->
+        <!--xaxistickformat="xAxisTickFormatFunction()"-->
+        <!--showlegend="true"-->
+        <!--width="550"-->
+        <!--height="350"-->
+        <!--useinteractiveguideline="true"-->
+        <!--tooltips="true"-->
+        <!--interpolate="cardinal-open">-->
+<!--</nvd3-line-chart>-->
 
-<nvd3-line-chart
-        data="speedGraphData"
-        showxaxis="true"
-        showyaxis="true"
-        xaxistickformat="xAxisTickFormatFunction()"
-        width="550"
-        height="350">
-</nvd3-line-chart>
+<!--<button ng-click="postTestData()">Post Data</button>-->
 
-<button ng-click="postTestData()">Post Data</button>
-
-<div ng-repeat="data in tesselData">
-    <h4>ID: {{ data.id }}</h4>
-    <h5>Title: {{ data.title }}</h5>
-    <h5>Accelerometer Data:</h5>
-    <p>x: {{ data.accelerometerData.x }} y: {{ data.accelerometerData.y }} z: {{ data.accelerometerData.z }}</p>
-    <h5>Climate Data:</h5>
-    <p>Degree: {{ data.climateData.degree }} Humidity: {{ data.climateData.humidity }}</p>
-    <h5>GPS Data:</h5>
-    <p>Latitude: {{ data.gpsData.lat }} Longitude: {{ data.gpsData.lng }}</p>
-    <h5>Time: {{ data.time }}</h5>
-    <h5>Creation Time: {{ data.creationTime }}</h5>
-    <button class="btn btn-default" ng-click="deleteTesselData(data)">Delete</button>
-</div>
+<!--<div ng-repeat="data in tesselData">-->
+    <!--<h4>ID: {{ data.id }}</h4>-->
+    <!--<h5>Title: {{ data.title }}</h5>-->
+    <!--<h5>Accelerometer Data:</h5>-->
+    <!--<p>x: {{ data.accelerometerData.x }} y: {{ data.accelerometerData.y }} z: {{ data.accelerometerData.z }}</p>-->
+    <!--<h5>Climate Data:</h5>-->
+    <!--<p>Degree: {{ data.climateData.degree }} Humidity: {{ data.climateData.humidity }}</p>-->
+    <!--<h5>GPS Data:</h5>-->
+    <!--<p>Latitude: {{ data.gpsData.lat }} Longitude: {{ data.gpsData.lng }}</p>-->
+    <!--<h5>Time: {{ data.time }}</h5>-->
+    <!--<h5>Creation Time: {{ data.creationTime }}</h5>-->
+    <!--<button class="btn btn-default" ng-click="deleteTesselData(data)">Delete</button>-->
+<!--</div>-->
