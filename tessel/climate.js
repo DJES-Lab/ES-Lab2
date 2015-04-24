@@ -22,8 +22,8 @@ climate.on('ready', function () {
         climate.readTemperature('c', function (err, temp) {
             climate.readHumidity(function (err, humid) {
                 //console.log('Degrees:', temp.toFixed(4) + 'C', 'Humidity:', humid.toFixed(4) + '%RH');
-                climateData.degree = temp.toFixed(4);
-                climateData.humidity = humid.toFixed(4);
+                climateData.degree = Math.round(temp * 1e4) / 1e4;
+                climateData.humidity = Math.round(humid * 1e4) / 1e4;
             });
         });
     }, 500);

@@ -169,9 +169,6 @@ angular.module('app')
             };
         };
 
-        $scope.tesselData = [];
-        $scope.velocityData = [];
-        $scope.speedData = [];
         $scope.jsonFileProperties = {
             selectedJSONFile: 'exp1',
             allJSONFileNames: [],
@@ -182,55 +179,40 @@ angular.module('app')
         };
 
         $scope.getAllJSONFileNames = function() {
-            $http({
-                method: 'GET',
-                url: 'api/tessel/data/files'
-            })
+            $http.get('api/tessel/data/files')
                 .success(function(data, status, headers, config) {
                     $scope.jsonFileProperties.allJSONFileNames = data;
                 });
         };
 
         $scope.getAllAnalysisMethods = function(dataType) {
-            var dataTypeParam = dataType.charAt(0).toLowerCase() + dataType.slice(1);
-            $http({
-                method: 'GET',
-                url: 'api/tessel/analysis/' + dataTypeParam + '/methods'
-            })
+            console.log(dataType);
+            $http.get('api/tessel/analysis/' + dataType + '/methods')
                 .success(function (data, status, headers, config) {
-                    $scope.jsonFileProperties.allAnalysisMethods[dataTypeParam] = data;
+                    $scope.jsonFileProperties.allAnalysisMethods = data;
                 });
         };
 
         $scope.getTesselData = function(dataFileName) {
-            $http({
-                method: 'GET',
-                url: 'json/tessel/' + dataFileName + '.json'
-            })
+            $http.get('json/tessel/' + dataFileName + '.json')
                 .success(function (data, status, headers, config) {
-                    $scope.tesselData = data;
                     $scope.jsonFileProperties.allDataTypes = ConvertJSON.getAllDataTypes(data[0]);
                     $scope.tesselGraphData = {};
-                    $scope.jsonFileProperties.allDataTypes.forEach(function(dataType) {
+                    $scope.jsonFileProperties.allDataTypes.forEach(function (dataType) {
                         $scope.tesselGraphData[dataType] = ConvertJSON.convertToLineChartJSON(ConvertJSON.extractDataTypeFromAllData(data, dataType));
-                        $scope.getAllAnalysisMethods(dataType);  // This is async!
                     });
 
                     $scope.refreshCharts();
 
                     $location.path('/tessel-graph');
                 });
-        };
+        }
 
         $scope.getTesselAnalysisData = function(method) {
             var jsonFileName = $scope.jsonFileProperties.selectedJSONFile;
-            var dataType = $scope.jsonFileProperties.selectedDataType.charAt(0).toLowerCase() + $scope.jsonFileProperties.selectedDataType.slice(1);
-            $http({
-                method: 'GET',
-                url: 'api/tessel/analysis/' + jsonFileName + '/' + dataType + '/' + method
-            })
+            var dataType = $scope.jsonFileProperties.selectedDataType;
+            $http.get('api/tessel/analysis/' + jsonFileName + '/' + dataType + '/' + method)
                 .success(function (data, status, headers, config) {
-                    $scope.tesselData = data;
                     $scope.tesselGraphData[dataType] = ConvertJSON.convertToLineChartJSON(data);
 
                     $scope.refreshCharts();
@@ -239,69 +221,8 @@ angular.module('app')
                 });
         };
 
-        //$scope.getTesselData = function() {
-        //    $http({
-        //        method: 'GET',
-        //        //url: 'api/tessel/data'
-        //        url: 'json/tessel/exp1.json'
-        //    })
-        //        .success(function (data, status, headers, config) {
-        //            $scope.tesselData = data;
-        //            $scope.accelGraphData = ConvertJSON.convertToLineChartJSON(data.map(function(dat) {
-        //                return {
-        //                    time: dat.time,
-        //                    x: dat.accelerometerData.x,
-        //                    y: dat.accelerometerData.y,
-        //                    z: dat.accelerometerData.z
-        //                };
-        //            }));
-        //            $scope.climateGraphData = ConvertJSON.convertToLineChartJSON(data.map(function(dat) {
-        //                return {
-        //                    time: dat.time,
-        //                    degree: dat.climateData.degree,
-        //                    humidity: dat.climateData.humidity
-        //                };
-        //            }));
-        //            $scope.refreshCharts();
-        //
-        //            $location.path('/tessel-graph');
-        //        });
-        //};
-
-        //$scope.getTesselAnalysisData = function() {
-        //    $http({
-        //        method: 'GET',
-        //        url: 'api/tessel/analysis/exp1/accelerometer/analHorizontalVelocity'
-        //    })
-        //        .success(function (data, status, headers, config) {
-        //            $scope.velocityData = data;
-        //            $scope.velocityGraphData = ConvertJSON.convertToLineChartJSON(data);
-        //
-        //            $scope.refreshCharts();
-        //
-        //            $location.path('/tessel-graph');
-        //        });
-        //};
-        //
-        //$scope.getTesselSpeedData = function() {
-        //    $http({
-        //        method: 'GET',
-        //        url: 'api/tessel/analysis/exp1/accelerometer/analHorizontalSpeed'
-        //    })
-        //        .success(function (data, status, headers, config) {
-        //            $scope.speedData = data;
-        //            $scope.speedGraphData = ConvertJSON.convertToLineChartJSON(data);
-        //            $scope.refreshCharts();
-        //
-        //            $location.path('/tessel-graph');
-        //        });
-        //};
-
         $scope.deleteTesselData = function(data) {
-            $http({
-                method: 'DELETE',
-                url: 'api/tessel/data/' + data.id
-            })
+            $http.delete('api/tessel/data/' + data.id)
                 .success(function (data, status, headers, config) {
                     $location.path('/tessel-graph');
                     $scope.getTesselData();
@@ -314,7 +235,11 @@ angular.module('app')
             }
         });
 
+        $scope.$watch('jsonFileProperties.selectedAnalysisMethod', function(newValue, oldValue) {
+            if (newValue && newValue !== oldValue) {
+                $scope.getTesselAnalysisData(newValue);
+            }
+        });
+
         $scope.getTesselData($scope.jsonFileProperties.selectedJSONFile);
-        //$scope.getTesselAnalysisData();
-        //$scope.getTesselSpeedData();
     });

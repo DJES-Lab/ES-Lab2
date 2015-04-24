@@ -13,21 +13,22 @@
 </ui-select>
 <br/>
 <tabset>
-    <tab ng-repeat="dataType in jsonFileProperties.allDataTypes" heading="{{dataType}}" select="jsonFileProperties.selectedDataType = dataType">
+    <tab ng-repeat="dataType in jsonFileProperties.allDataTypes" heading="{{dataType | firstCharToUppercase}}" select="jsonFileProperties.selectedDataType = dataType">
         <ui-select ng-model="jsonFileProperties.selectedAnalysisMethod"
                    theme="bootstrap"
                    reset-search-input="false"
                    style="width: 300px;">
-            <ui-select-match placeholder="Select an analysis method...">{{$select.selected}}</ui-select-match>
-            <ui-select-choices repeat="method in jsonFileProperties.allAnalysisMethods[jsonFileProperties.selectedDataType] track by $index">
-                <div ng-bind-html="method | highlight: $select.search"></div>
+            <ui-select-match placeholder="Select an analysis method...">{{$select.selected | formatMethod}}</ui-select-match>
+            <ui-select-choices repeat="method in jsonFileProperties.allAnalysisMethods track by $index"
+                    refresh="getAllAnalysisMethods(jsonFileProperties.selectedDataType)"
+                    refresh-delay="0">
+                <div ng-bind-html="method | formatMethod | highlight: $select.search"></div>
             </ui-select-choices>
         </ui-select>
         <nvd3-line-chart
                 data="tesselGraphData[jsonFileProperties.selectedDataType]"
                 showxaxis="true"
                 showyaxis="true"
-                forcey="[-0.2]"
                 xaxistickformat="xAxisTickFormatFunction()"
                 width="550"
                 height="350"
@@ -37,62 +38,7 @@
                 interpolate="cardinal-open">
         </nvd3-line-chart>
     </tab>
-    <!--<tab heading="Accelerometer" select="refreshCharts()">-->
-        <!--<nvd3-line-chart-->
-                <!--data="accelGraphData"-->
-                <!--showxaxis="true"-->
-                <!--showyaxis="true"-->
-                <!--forcey="[-0.2]"-->
-                <!--xaxistickformat="xAxisTickFormatFunction()"-->
-                <!--width="550"-->
-                <!--height="350"-->
-                <!--showlegend="true"-->
-                <!--useinteractiveguideline="true"-->
-                <!--tooltips="true"-->
-                <!--interpolate="cardinal-open">-->
-        <!--</nvd3-line-chart>-->
-    <!--</tab>-->
-    <!--<tab heading="Climate" select="refreshCharts()">-->
-        <!--<nvd3-line-chart-->
-                <!--data="climateGraphData"-->
-                <!--showxaxis="true"-->
-                <!--showyaxis="true"-->
-                <!--xaxistickformat="xAxisTickFormatFunction()"-->
-                <!--width="550"-->
-                <!--height="350"-->
-                <!--showlegend="true"-->
-                <!--useinteractiveguideline="true"-->
-                <!--tooltips="true"-->
-                <!--interpolate="cardinal-open">-->
-        <!--</nvd3-line-chart>-->
-    <!--</tab>-->
 </tabset>
-
-<!--<nvd3-line-chart-->
-        <!--data="velocityGraphData"-->
-        <!--showxaxis="true"-->
-        <!--showyaxis="true"-->
-        <!--xaxistickformat="xAxisTickFormatFunction()"-->
-        <!--width="550"-->
-        <!--height="350"-->
-        <!--showlegend="true"-->
-        <!--useinteractiveguideline="true"-->
-        <!--tooltips="true"-->
-        <!--interpolate="cardinal-open">-->
-<!--</nvd3-line-chart>-->
-
-<!--<nvd3-line-chart-->
-        <!--data="speedGraphData"-->
-        <!--showxaxis="true"-->
-        <!--showyaxis="true"-->
-        <!--xaxistickformat="xAxisTickFormatFunction()"-->
-        <!--showlegend="true"-->
-        <!--width="550"-->
-        <!--height="350"-->
-        <!--useinteractiveguideline="true"-->
-        <!--tooltips="true"-->
-        <!--interpolate="cardinal-open">-->
-<!--</nvd3-line-chart>-->
 
 <!--<button ng-click="postTestData()">Post Data</button>-->
 

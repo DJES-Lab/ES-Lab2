@@ -16,9 +16,12 @@ accel.on('ready', function () {
         //console.log('x:', xyz[0].toFixed(2),
         //    'y:', xyz[1].toFixed(2),
         //    'z:', xyz[2].toFixed(2));
-        accelerometerData.x = xyz[0].toFixed(2);
-        accelerometerData.y = xyz[1].toFixed(2);
-        accelerometerData.z = xyz[2].toFixed(2);
+        //accelerometerData.x = xyz[0].toFixed(2);
+        //accelerometerData.y = xyz[1].toFixed(2);
+        //accelerometerData.z = xyz[2].toFixed(2);
+        accelerometerData.x = Math.round(xyz[0] * 1e2) / 1e2;
+        accelerometerData.y = Math.round(xyz[1] * 1e2) / 1e2;
+        accelerometerData.z = Math.round(xyz[2] * 1e2) / 1e2;
     });
 
 });

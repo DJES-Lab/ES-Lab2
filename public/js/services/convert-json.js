@@ -70,8 +70,7 @@ angular.module('app')
                                 return key.match(/(.+)Data$/) && Object.keys(obj[key]).length > 0;
                             })
                             .map(function(key) {
-                                var newKey = key.replace(/(.+)Data$/, '$1');
-                                return newKey.charAt(0).toUpperCase() + newKey.slice(1);
+                                return key.replace(/(.+)Data$/, '$1');
                             });
                     } else {
                         return [];
