@@ -174,7 +174,7 @@ angular.module('app')
             allJSONFileNames: [],
             selectedDataType: 'accelerometer',
             allDataTypes: [],
-            selectedAnalysisMethod: '',
+            selectedAnalysisMethod: 'Original Graph',
             allAnalysisMethods: []
         };
 
@@ -190,6 +190,7 @@ angular.module('app')
             $http.get('api/tessel/analysis/' + dataType + '/methods')
                 .success(function (data, status, headers, config) {
                     $scope.jsonFileProperties.allAnalysisMethods = data;
+                    $scope.jsonFileProperties.allAnalysisMethods.push('Original Graph');
                 });
         };
 
@@ -206,7 +207,7 @@ angular.module('app')
 
                     $location.path('/tessel-graph');
                 });
-        }
+        };
 
         $scope.getTesselAnalysisData = function(method) {
             var jsonFileName = $scope.jsonFileProperties.selectedJSONFile;
@@ -237,7 +238,10 @@ angular.module('app')
 
         $scope.$watch('jsonFileProperties.selectedAnalysisMethod', function(newValue, oldValue) {
             if (newValue && newValue !== oldValue) {
-                $scope.getTesselAnalysisData(newValue);
+                if (newValue === 'Original Graph')
+                    $scope.getTesselData($scope.jsonFileProperties.selectedJSONFile);
+                else
+                    $scope.getTesselAnalysisData(newValue);
             }
         });
 
