@@ -236,6 +236,12 @@ angular.module('app')
             }
         });
 
+        $scope.$watch('jsonFileProperties.selectedDataType', function(newValue, oldValue) {
+            if (newValue && newValue !== oldValue) {
+                $scope.getAllAnalysisMethods(newValue);
+            }
+        });
+
         $scope.$watch('jsonFileProperties.selectedAnalysisMethod', function(newValue, oldValue) {
             if (newValue && newValue !== oldValue) {
                 if (newValue === 'Original Graph')
